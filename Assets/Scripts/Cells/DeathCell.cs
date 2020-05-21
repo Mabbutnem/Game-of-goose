@@ -10,7 +10,7 @@ public class DeathCell : ACell
 
    public override void OnMoved(AGoose goose)
    {
-      MoveManager.MoveAtAfter(goose, DEST_INDEX);
+      MoveManager.MoveAtAfter(goose, DEST_INDEX, true);
    }
 
    public override void TryEndTurn(AGoose goose)

@@ -101,6 +101,7 @@ public class GameManager : MonoBehaviour
    public static void EndGame()
    {
       OnEndGame();
+      Debug.Log("Player " + CurrentGooseIndex + " Wins !");
    }
    #endregion
 

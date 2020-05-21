@@ -99,6 +99,8 @@ public class BoardManager : MonoBehaviour
             return new PrisonCell(index, waypoint);
          case CellEnum.DEATH:
             return new DeathCell(index, waypoint);
+         case CellEnum.END:
+            return new EndCell(index, waypoint);
          case CellEnum.DEFAULT:
             return new DefaultCell(index, waypoint);
          default:

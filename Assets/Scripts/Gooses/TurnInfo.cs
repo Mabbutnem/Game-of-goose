@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TurnInfo
 {
+   #region Builder
    public class TurnInfoBuilder
    {
       private bool onBeginCell = false;
@@ -38,7 +39,9 @@ public class TurnInfo
       }
    }
    public static TurnInfoBuilder Builder() { return new TurnInfoBuilder(); }
+   #endregion
 
+   #region Class
    public bool OnBeginCell { get; }
    public int NbTurnToPass { get; }
    public bool InWell { get; }
@@ -51,4 +54,5 @@ public class TurnInfo
       InWell = inWell;
       HasWon = hasWon;
    }
+   #endregion
 }

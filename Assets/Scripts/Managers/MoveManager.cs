@@ -11,7 +11,9 @@ public class MoveManager : MonoBehaviour
 
    //Readonly
    private static readonly float SPEED = 0.1f;
+   private static readonly float FAST_SPEED = 0.25f;
    private static readonly float DONE_RADIUS = 0.05f;
+   private static readonly float FAST_DONE_RADIUS = 0.2f;
    private static readonly float WAIT_BEFORE_MOVE = 0.5f;
 
    //Private
@@ -20,6 +22,8 @@ public class MoveManager : MonoBehaviour
    private static Vector3 dir;
    private static Vector3 partialDestPosition;
    private static bool donePartialMove = false;
+   private static float speed = SPEED;
+   private static float doneRadius = DONE_RADIUS;
 
    //Events
    public static event Action<AGoose, ACell> OnMoved = (goose, destCell) => { };
@@ -38,8 +42,8 @@ public class MoveManager : MonoBehaviour
    {
       if(mustMove && !donePartialMove)
       {
-         currentTransform.Translate(SPEED * dir);
-         if((currentTransform.position - partialDestPosition).magnitude <= DONE_RADIUS)
+         currentTransform.Translate(speed * dir);
+         if((currentTransform.position - partialDestPosition).magnitude <= doneRadius)
          {
             donePartialMove = true;
             currentTransform.position = partialDestPosition;
@@ -49,30 +53,32 @@ public class MoveManager : MonoBehaviour
    #endregion
 
    #region Methods
-   public static void Move(AGoose goose, int nbCells, bool movedByDice = true)
+   public static void Move(AGoose goose, int nbCells, bool fast = false)
    {
-      instance.StartCoroutine(instance.MoveRoutine(goose, nbCells, movedByDice));
+      speed = fast ? FAST_SPEED : SPEED;
+      doneRadius = fast ? FAST_DONE_RADIUS : DONE_RADIUS;
+      instance.StartCoroutine(instance.MoveRoutine(goose, nbCells));
    }
 
-   public static void MoveAt(AGoose goose, int cellIndex, bool triggerOnMovedEvent = true)
+   public static void MoveAt(AGoose goose, int cellIndex, bool fast = false)
    {
       int nbCells = cellIndex - goose.CurrentCellIndex;
-      Move(goose, nbCells, triggerOnMovedEvent);
+      Move(goose, nbCells, fast);
    }
 
-   public static void MoveAfter(AGoose goose, int nbCells, bool movedByDice = true)
+   public static void MoveAfter(AGoose goose, int nbCells, bool fast = false)
    {
-      instance.StartCoroutine(instance.MoveAfterRoutine(goose, nbCells, movedByDice));
+      instance.StartCoroutine(instance.MoveAfterRoutine(goose, nbCells, fast));
    }
 
-   public static void MoveAtAfter(AGoose goose, int cellIndex, bool movedByDice = true)
+   public static void MoveAtAfter(AGoose goose, int cellIndex, bool fast = false)
    {
-      instance.StartCoroutine(instance.MoveAtAfterRoutine(goose, cellIndex, movedByDice));
+      instance.StartCoroutine(instance.MoveAtAfterRoutine(goose, cellIndex, fast));
    }
    #endregion
 
    #region Routines
-   public IEnumerator MoveRoutine(AGoose goose, int nbCells, bool movedByDice)
+   public IEnumerator MoveRoutine(AGoose goose, int nbCells)
    {
       //Init variable used for all the move
       currentTransform = goose.Transform;
@@ -121,16 +127,16 @@ public class MoveManager : MonoBehaviour
       currentCell.OnMoved(goose);
    }
 
-   private IEnumerator MoveAfterRoutine(AGoose goose, int cellIndex, bool movedByDice)
+   private IEnumerator MoveAfterRoutine(AGoose goose, int cellIndex, bool fast)
    {
       yield return new WaitForSeconds(WAIT_BEFORE_MOVE);
-      Move(goose, cellIndex, movedByDice);
+      Move(goose, cellIndex, fast);
    }
 
-   private IEnumerator MoveAtAfterRoutine(AGoose goose, int cellIndex, bool movedByDice)
+   private IEnumerator MoveAtAfterRoutine(AGoose goose, int cellIndex, bool fast)
    {
       yield return new WaitForSeconds(WAIT_BEFORE_MOVE);
-      MoveAt(goose, cellIndex, movedByDice);
+      MoveAt(goose, cellIndex, fast);
    }
    #endregion
 }

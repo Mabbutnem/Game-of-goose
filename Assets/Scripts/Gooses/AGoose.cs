@@ -25,7 +25,7 @@ public abstract class AGoose
       //If the player is in the well
       if (TurnInfo.InWell)
       {
-         if(!diceResult.HasDone(6)) { return; } //Pass turn..
+         if(!diceResult.HasDone(6)) { GameManager.EndTurn(); return; } //Pass turn..
          TurnInfo = TurnInfo.Builder().Build();
       }
 
@@ -35,18 +35,18 @@ public abstract class AGoose
          //6 and 3
          if (diceResult.HasDone(6, 3))
          {
-            MoveManager.MoveAt(this, 26);
+            MoveManager.MoveAt(this, 26, true);
             return;
          }
 
          //5 and 4
          if (diceResult.HasDone(5, 4))
          {
-            MoveManager.MoveAt(this, 53);
+            MoveManager.MoveAt(this, 53, true);
             return;
          }
       }
 
-      MoveManager.Move(this, diceResult.Total);
+      MoveManager.Move(this, diceResult.Total, true);
    }
 }

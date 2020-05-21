@@ -8,11 +8,17 @@ public class GooseCell : ACell
 
    public override void OnMoved(AGoose goose)
    {
-      MoveManager.MoveAfter(goose, goose.LastDiceResult.Total);
+      if (GameManager.Gooses[GameManager.CurrentGooseIndex] == goose)
+      {
+         MoveManager.MoveAfter(goose, goose.LastDiceResult.Total);
+      }
    }
 
    public override void TryEndTurn(AGoose goose)
    {
-      //Do Nothing..
+      if (GameManager.Gooses[GameManager.CurrentGooseIndex] != goose)
+      {
+         GameManager.EndTurn();
+      }
    }
 }
