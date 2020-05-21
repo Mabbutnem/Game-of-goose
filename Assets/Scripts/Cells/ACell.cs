@@ -1,0 +1,29 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public abstract class ACell
+{
+   public int Index { get; private set; }
+   public Transform Waypoint { get; private set; }
+   private AGoose occupant = null;
+   public AGoose Occupant
+   {
+      get { return occupant; }
+      set { if (Index != 0) occupant = value; }
+   }
+
+   public ACell(int index, Transform waypoint)
+   {
+      Index = index;
+      Waypoint = waypoint;
+   }
+
+   public abstract void OnMoved(AGoose goose);
+   public abstract void TryEndTurn(AGoose goose);
+
+   public bool Occupied()
+   {
+      return occupant != null;
+   }
+}
