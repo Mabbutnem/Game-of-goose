@@ -47,6 +47,6 @@ public abstract class AGoose
          }
       }
 
-      MoveManager.Move(this, diceResult.Total, true);
+      MoveManager.Move(this, diceResult.Total);
    }
 }
