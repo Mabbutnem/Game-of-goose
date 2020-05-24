@@ -6,7 +6,10 @@ public class MazeCell : ACell
 {
    private static readonly int DEST_INDEX = 30;
 
-   public MazeCell(int index, Transform waypoint) : base(index, waypoint) { }
+   public MazeCell(int index, Transform waypoint) : base(index, waypoint)
+   {
+      onMovedSound = SoundManager.Sound.BadCell;
+   }
 
    public override void OnMoved(AGoose goose)
    {

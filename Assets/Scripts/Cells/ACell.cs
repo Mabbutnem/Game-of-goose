@@ -12,6 +12,7 @@ public abstract class ACell
       get { return occupant; }
       set { if (Index != 0) occupant = value; }
    }
+   protected SoundManager.Sound onMovedSound = 0;
 
    public ACell(int index, Transform waypoint)
    {
@@ -21,6 +22,11 @@ public abstract class ACell
 
    public abstract void OnMoved(AGoose goose);
    public abstract void TryEndTurn(AGoose goose);
+
+   public void PlayOnMovedSound()
+   {
+      SoundManager.PlaySound(onMovedSound, 1f);
+   }
 
    public bool Occupied()
    {

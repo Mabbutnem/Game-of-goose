@@ -6,7 +6,10 @@ public class PrisonCell : ACell
 {
    private static readonly int TURN_TO_PASS = 2;
 
-   public PrisonCell(int index, Transform waypoint) : base(index, waypoint) { }
+   public PrisonCell(int index, Transform waypoint) : base(index, waypoint)
+   {
+      onMovedSound = SoundManager.Sound.BadCell;
+   }
 
    public override void OnMoved(AGoose goose)
    {

@@ -8,6 +8,6 @@ public class PlayerGoose : AGoose
 
    public override void TakeTurn()
    {
-      DiceManager.Roll();
+      UIManager.RollButton.interactable = true;
    }
 }

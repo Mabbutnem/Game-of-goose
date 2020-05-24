@@ -6,7 +6,10 @@ public class HotelCell : ACell
 {
    private static readonly int TURN_TO_PASS = 1;
 
-   public HotelCell(int index, Transform waypoint) : base(index, waypoint) { }
+   public HotelCell(int index, Transform waypoint) : base(index, waypoint)
+   {
+      onMovedSound = SoundManager.Sound.BadCell;
+   }
 
    public override void OnMoved(AGoose goose)
    {

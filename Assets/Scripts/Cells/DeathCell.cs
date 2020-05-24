@@ -6,7 +6,10 @@ public class DeathCell : ACell
 {
    private static readonly int DEST_INDEX = 0;
 
-   public DeathCell(int index, Transform waypoint) : base(index, waypoint) { }
+   public DeathCell(int index, Transform waypoint) : base(index, waypoint)
+   {
+      onMovedSound = SoundManager.Sound.BadCell;
+   }
 
    public override void OnMoved(AGoose goose)
    {

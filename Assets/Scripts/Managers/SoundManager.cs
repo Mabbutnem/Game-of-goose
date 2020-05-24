@@ -10,17 +10,14 @@ public static class SoundManager
 
     // Public.
     public enum Sound
-    {
-        DiceRoll,
-        BeginTurn,
-        Teleport,
-        Selection,
-        Click,
-        Victory,
-        PlayerMove,
-        TeleportSnake,
-        TeleportLadder,
-        Walk,
+   {
+      Hover,
+      Click,
+      DiceRoll,
+      Victory,
+      NeutralCell,
+      GoodCell,
+      BadCell,
     }
     #endregion
 
@@ -54,39 +51,5 @@ public static class SoundManager
         Debug.LogError("Sound" + sound + " not found !");
         return null;
     }
-
-    /// <summary>
-    /// Play the walk sound by instanciating one instance of a walksound gameobject.
-    /// </summary>
-    /// <param name="state"></param>
-    public static void EnableWalkSound(bool state)
-    {
-        if (state)
-        {
-            if (!walkAudioSource)
-            {
-                GameObject walkSoundGameObject = new GameObject("SoundWalk");
-                walkAudioSource = walkSoundGameObject.AddComponent<AudioSource>();
-                walkAudioSource.clip = GetAudioClip(Sound.Walk);
-                walkAudioSource.loop = true;
-                walkAudioSource.volume = 2f;
-                PlayRandomPitch(walkAudioSource);
-            }
-            else
-                PlayRandomPitch(walkAudioSource);
-        }
-        else
-            walkAudioSource.Pause();
-    }
-
-    /// <summary>
-    /// Play a sound by randomising the pitch to get a different sound each time.
-    /// </summary>
-    /// <param name="audiosource"></param>
-    private static void PlayRandomPitch(AudioSource audiosource)
-    {
-        audiosource.pitch = (Random.value < .5 ? 1 : -1) * Random.Range(1f, 3f);
-        audiosource.Play();
-    }
-    #endregion
+   #endregion
 }

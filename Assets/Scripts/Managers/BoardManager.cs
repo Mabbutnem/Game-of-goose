@@ -14,6 +14,7 @@ public class BoardManager : MonoBehaviour
    public static readonly int NB_CELLS = 64;
    private static readonly Dictionary<CellEnum, int[]> CELL_INITIALIZER = new Dictionary<CellEnum, int[]>()
    {
+      {CellEnum.BEGIN,  new int[] { 0} },
       {CellEnum.GOOZE,  new int[] { 5, 9, 14, 18, 23, 27, 32, 36, 41, 45, 50, 54, 59} },
       {CellEnum.BRIDGE, new int[] { 6} },
       {CellEnum.HOTEL,  new int[] { 19} },
@@ -25,7 +26,7 @@ public class BoardManager : MonoBehaviour
    };
 
    //Public
-   public static ACell[] Cells { get; private set; } = new ACell[NB_CELLS];
+   public static ACell[] Cells { get; private set; }
    #endregion
 
    #region Unity Callbacks
@@ -36,6 +37,7 @@ public class BoardManager : MonoBehaviour
       else GameObjectUtils.DebugErrorStop("Multiple instances of singleton.");
       //SINGLETON
 
+      Cells = new ACell[NB_CELLS];
       Transform waypointsTransform = GameObjectUtils.Find("Waypoints").transform;
       if(Cells.Length != waypointsTransform.childCount)
       {
@@ -85,6 +87,8 @@ public class BoardManager : MonoBehaviour
    {
       switch (cellEnum)
       {
+         case CellEnum.BEGIN:
+            return new BeginCell(index, waypoint);
          case CellEnum.GOOZE:
             return new GooseCell(index, waypoint);
          case CellEnum.BRIDGE:

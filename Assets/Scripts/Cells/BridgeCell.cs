@@ -6,7 +6,10 @@ public class BridgeCell : ACell
 {
    private static readonly int DEST_INDEX = 12;
 
-   public BridgeCell(int index, Transform waypoint) : base(index, waypoint) { }
+   public BridgeCell(int index, Transform waypoint) : base(index, waypoint)
+   {
+      onMovedSound = SoundManager.Sound.GoodCell;
+   }
 
    public override void OnMoved(AGoose goose)
    {

@@ -10,21 +10,17 @@ public class GameManager : MonoBehaviour
    private static GameManager instance;
 
    //Readonly
-   private static readonly string[] GOOSE_INITIALIZER = new string[]
-   {
-      "Player",
-      "Bot",
-      "Bot",
-      "Bot",
-   };
+   private static readonly int NB_GOOSES = 4;
 
    //Public
-   public static int NbGoose { get; set; } = 4;
+   public static int NbPlayerGoose { get; set; } = 0;
    public static AGoose[] Gooses { get; private set; }
    public static int CurrentGooseIndex { get; private set; } = 0;
 
    //Private
    private static bool triggerNextTurn = false;
+   private static Sprite[] goosesSprites;
+   private static SpriteRenderer currentGooseRenderer;
 
    //Events
    public static event Action OnBeginGame = () => { };
@@ -42,13 +38,26 @@ public class GameManager : MonoBehaviour
       //SINGLETON
 
       Transform gooseGameObjectTransform = GameObjectUtils.Find(">>> GOOSE").transform;
-      Gooses = new AGoose[NbGoose];
-      for(int i = 0; i < NbGoose; i++)
+      Gooses = new AGoose[NB_GOOSES];
+      goosesSprites = new Sprite[NB_GOOSES];
+      for (int i = 0; i < Gooses.Length; i++)
       {
          Gooses[i] = GenerateGoose(i, gooseGameObjectTransform.GetChild(i));
+         goosesSprites[i] = gooseGameObjectTransform.GetChild(i).GetComponent<SpriteRenderer>().sprite;
       }
 
       CurrentGooseIndex = -1;
+
+      currentGooseRenderer = GameObjectUtils.Find("Current Goose").GetComponent<SpriteRenderer>();
+   }
+
+   private void OnDestroy()
+   {
+      //Empty events
+      OnBeginGame = () => { };
+      OnBeginTurn = goose => { };
+      OnEndTurn =   goose => { };
+      OnEndGame =   () => { };
    }
 
    private void Start()
@@ -66,6 +75,20 @@ public class GameManager : MonoBehaviour
    }
    #endregion
 
+   #region Initialisation
+   private AGoose GenerateGoose(int gooseIndex, Transform transform)
+   {
+      if(gooseIndex < NbPlayerGoose)
+      {
+         return new PlayerGoose(transform);
+      }
+      else
+      {
+         return new BotGoose(transform);
+      }
+   }
+   #endregion
+
    #region Event Methods
    public static void BeginGame()
    {
@@ -78,6 +101,7 @@ public class GameManager : MonoBehaviour
       CurrentGooseIndex++;
       if (CurrentGooseIndex >= Gooses.Length) CurrentGooseIndex = 0;
       AGoose currentGoose = Gooses[CurrentGooseIndex];
+      currentGooseRenderer.sprite = goosesSprites[CurrentGooseIndex]; //Refresh current goose sprite
 
       OnBeginTurn(currentGoose);
 
@@ -100,26 +124,8 @@ public class GameManager : MonoBehaviour
 
    public static void EndGame()
    {
-      OnEndGame();
       Debug.Log("Player " + CurrentGooseIndex + " Wins !");
-   }
-   #endregion
-
-   #region Init Gooses
-   private AGoose GenerateGoose(int gooseIndex, Transform transform)
-   {
-      if (GOOSE_INITIALIZER[gooseIndex] == "Player")
-      {
-         return new PlayerGoose(transform);
-      }
-      else if (GOOSE_INITIALIZER[gooseIndex] == "Bot")
-      {
-         return new BotGoose(transform);
-      }
-      else
-      {
-         return new PlayerGoose(transform);
-      }
+      OnEndGame();
    }
    #endregion
 }

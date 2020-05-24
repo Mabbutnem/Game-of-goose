@@ -21,6 +21,7 @@ public class DiceManager : MonoBehaviour
    private static DiceResult diceResult = new DiceResult(0, 0);
 
    //Event
+   public static event Action OnRollBegin = () => { };
    public static event Action<DiceResult> OnRollEnd = dr => { };
 
    //Editor
@@ -48,6 +49,10 @@ public class DiceManager : MonoBehaviour
       //Unsubsribe to game events
       GameManager.OnBeginTurn -= SubMoveByDiceWhenRollEnd;
       GameManager.OnEndTurn -= UnsubMoveByDiceWhenRollEnd;
+
+      //Empty events
+      OnRollBegin = () => { };
+      OnRollEnd = dr => { };
    }
 
    private void SubMoveByDiceWhenRollEnd(AGoose goose) { OnRollEnd += goose.MoveByDice; }
@@ -55,6 +60,11 @@ public class DiceManager : MonoBehaviour
    #endregion
 
    #region Methods
+   public void ButtonRoll()
+   {
+      Roll();
+   }
+
    public static void Roll()
    {
       instance.StartCoroutine(instance.RollRoutine());
@@ -69,6 +79,7 @@ public class DiceManager : MonoBehaviour
    #region Routines
    protected IEnumerator RollRoutine()
    {
+      OnRollBegin();
       diceResult = new DiceResult(Random.Range(1, 7), Random.Range(1, 7));
       for (int i = 0; i < NB_FACE_ROLL; i++)
       {

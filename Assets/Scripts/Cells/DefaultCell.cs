@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class DefaultCell : ACell
 {
-   public DefaultCell(int index, Transform waypoint) : base(index, waypoint) { }
+   public DefaultCell(int index, Transform waypoint) : base(index, waypoint)
+   {
+      onMovedSound = SoundManager.Sound.NeutralCell;
+   }
 
    public override void OnMoved(AGoose goose)
    {

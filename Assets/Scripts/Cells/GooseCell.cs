@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class GooseCell : ACell
 {
-   public GooseCell(int index, Transform waypoint) : base(index, waypoint) { }
+   public GooseCell(int index, Transform waypoint) : base(index, waypoint)
+   {
+      onMovedSound = SoundManager.Sound.GoodCell;
+   }
 
    public override void OnMoved(AGoose goose)
    {

@@ -38,6 +38,15 @@ public class MoveManager : MonoBehaviour
       //SINGLETON
    }
 
+   private void OnDestroy()
+   {
+      mustMove = false;
+      currentTransform = null;
+
+      //Empty events
+      OnMoved = (goose, cell) => { };
+   }
+
    private void FixedUpdate()
    {
       if(mustMove && !donePartialMove)
@@ -125,6 +134,7 @@ public class MoveManager : MonoBehaviour
 
       OnMoved(goose, currentCell);
       currentCell.OnMoved(goose);
+      currentCell.PlayOnMovedSound();
    }
 
    private IEnumerator MoveAfterRoutine(AGoose goose, int cellIndex, bool fast)

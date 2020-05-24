@@ -5,6 +5,7 @@ using UnityEngine;
 public enum CellEnum
 {
     DEFAULT,
+    BEGIN,
     GOOZE,
     BRIDGE,
     HOTEL,
