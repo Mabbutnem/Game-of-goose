@@ -93,7 +93,6 @@ public class MoveManager : MonoBehaviour
       currentTransform = goose.Transform;
       int it = (int)Mathf.Sign(nbCells);
       ACell currentCell = BoardManager.Cells[goose.CurrentCellIndex];
-      //ACell destCell = BoardManager.Cells[goose.CurrentCellIndex + nbCells];
 
       //Put after mustMove to prevent wrong first time direction
       partialDestPosition = BoardManager.Cells[currentCell.Index + it].Waypoint.position;
@@ -106,7 +105,8 @@ public class MoveManager : MonoBehaviour
          int partialDestIndex = currentCell.Index + it;
          if(partialDestIndex >= BoardManager.NB_CELLS)
          {
-            it = -it; nbCells = -nbCells; //Move to the other direction
+            it = -it;           //Move to the other direction
+            nbCells = -nbCells; //Move to the other direction
             partialDestIndex += 2 * it; //Compensation for the previous add
          }
 
@@ -118,8 +118,8 @@ public class MoveManager : MonoBehaviour
          //Wait until partial move is done
          yield return new WaitUntil(() => donePartialMove);
 
-         nbCells -= it; //Remove nb cell to move by 1
          donePartialMove = false; //partial move is not done anymore
+         nbCells -= it; //Remove nb cell to move by 1
 
          //Move done verification
          currentCell = partialDestCell;

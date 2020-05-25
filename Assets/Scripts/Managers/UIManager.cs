@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
 
    //Private
    private GameObject victoryMenu;
+   private GameObject pauseMenu;
    #endregion
 
    #region Unity Callbacks
@@ -28,11 +29,21 @@ public class UIManager : MonoBehaviour
       RollButton = GameObjectUtils.Find("Roll Button").GetComponent<Button>();
       victoryMenu = GameObjectUtils.Find("Victory Menu");
       victoryMenu.SetActive(false);
+      pauseMenu = GameObjectUtils.Find("Pause Menu");
+      pauseMenu.SetActive(false);
    }
 
    private void Start()
    {
       GameManager.OnEndGame += ShowVictoryMenu;
+   }
+
+   private void Update()
+   {
+      if(Input.GetKeyDown(KeyCode.Escape))
+      {
+         SetPauseMenuActive(true);
+      }
    }
 
    private void OnDestroy()
@@ -45,6 +56,11 @@ public class UIManager : MonoBehaviour
    private void ShowVictoryMenu()
    {
       victoryMenu.SetActive(true);
+   }
+
+   public void SetPauseMenuActive(bool active)
+   {
+      pauseMenu.SetActive(active);
    }
 
    public void RestartGame()
